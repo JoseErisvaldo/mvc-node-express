@@ -5,8 +5,14 @@ class EstablishmentService {
     return await EstablishmentModel.findAll(userId);
   }
 
-  async getById(id) {
-    return await EstablishmentModel.findById(id);
+  async getById(id, userId) {
+    const establishment = await EstablishmentModel.findById(id, userId);
+
+    if (!establishment) {
+      throw new Error("Establishment not found");
+    }
+
+    return establishment;
   }
 
   async create(data, userId) {
@@ -20,12 +26,24 @@ class EstablishmentService {
     });
   }
 
-  async update(id, data) {
-    return await EstablishmentModel.update(id, data);
+  async update(id, data, userId) {
+    const establishment = await EstablishmentModel.update(id, data, userId);
+
+    if (!establishment) {
+      throw new Error("Establishment not found");
+    }
+
+    return establishment;
   }
 
-  async remove(id) {
-    return await EstablishmentModel.delete(id);
+  async remove(id, userId) {
+    const deleted = await EstablishmentModel.delete(id, userId);
+
+    if (!deleted) {
+      throw new Error("Establishment not found");
+    }
+
+    return deleted;
   }
 }
 

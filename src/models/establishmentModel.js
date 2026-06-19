@@ -12,12 +12,13 @@ class EstablishmentModel {
     return data;
   }
 
-  async findById(id) {
+  async findById(id, userId) {
     const { data, error } = await supabase
       .from("establishments")
       .select("*")
       .eq("id", id)
-      .single();
+      .eq("user_id", userId)
+      .maybeSingle();
 
     if (error) throw error;
 
@@ -36,28 +37,32 @@ class EstablishmentModel {
     return data;
   }
 
-  async update(id, payload) {
+  async update(id, payload, userId) {
     const { data, error } = await supabase
       .from("establishments")
       .update(payload)
       .eq("id", id)
+      .eq("user_id", userId)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
 
     return data;
   }
 
-  async delete(id) {
-    const { error } = await supabase
+  async delete(id, userId) {
+    const { data, error } = await supabase
       .from("establishments")
       .delete()
-      .eq("id", id);
+      .eq("id", id)
+      .eq("user_id", userId)
+      .select("id")
+      .maybeSingle();
 
     if (error) throw error;
 
-    return true;
+    return Boolean(data);
   }
 }
 

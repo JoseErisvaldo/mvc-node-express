@@ -12,7 +12,10 @@ class CategoryController {
 
   async get(req, res) {
     try {
-      const category = await CategoryService.getById(req.params.id);
+      const category = await CategoryService.getById(
+        req.params.id,
+        req.user.id,
+      );
       return res.json(category);
     } catch (err) {
       return res.status(500).json({ error: err.message });
@@ -30,18 +33,30 @@ class CategoryController {
 
   async update(req, res) {
     try {
-      const category = await CategoryService.update(req.params.id, req.body);
+      const category = await CategoryService.update(
+        req.params.id,
+        req.body,
+        req.user.id,
+      );
       return res.json(category);
     } catch (err) {
+      if (err.message === "Category not found") {
+        return res.status(404).json({ error: err.message });
+      }
+
       return res.status(400).json({ error: err.message });
     }
   }
 
   async delete(req, res) {
     try {
-      await CategoryService.remove(req.params.id);
+      await CategoryService.remove(req.params.id, req.user.id);
       return res.json({ message: "Deleted successfully" });
     } catch (err) {
+      if (err.message === "Category not found") {
+        return res.status(404).json({ error: err.message });
+      }
+
       return res.status(400).json({ error: err.message });
     }
   }

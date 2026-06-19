@@ -5,8 +5,14 @@ class CategoryService {
     return await CategoryModel.findAll(userId);
   }
 
-  async getById(id) {
-    return await CategoryModel.findById(id);
+  async getById(id, userId) {
+    const category = await CategoryModel.findById(id, userId);
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    return category;
   }
 
   async create(data, userId) {
@@ -20,12 +26,24 @@ class CategoryService {
     });
   }
 
-  async update(id, data) {
-    return await CategoryModel.update(id, data);
+  async update(id, data, userId) {
+    const category = await CategoryModel.update(id, data, userId);
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    return category;
   }
 
-  async remove(id) {
-    return await CategoryModel.delete(id);
+  async remove(id, userId) {
+    const deleted = await CategoryModel.delete(id, userId);
+
+    if (!deleted) {
+      throw new Error("Category not found");
+    }
+
+    return deleted;
   }
 }
 

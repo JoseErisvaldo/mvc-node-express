@@ -12,12 +12,13 @@ class CategoryModel {
     return data;
   }
 
-  async findById(id) {
+  async findById(id, userId) {
     const { data, error } = await supabase
       .from("categories")
       .select("*")
       .eq("id", id)
-      .single();
+      .eq("user_id", userId)
+      .maybeSingle();
 
     if (error) throw error;
 
@@ -36,25 +37,32 @@ class CategoryModel {
     return data;
   }
 
-  async update(id, payload) {
+  async update(id, payload, userId) {
     const { data, error } = await supabase
       .from("categories")
       .update(payload)
       .eq("id", id)
+      .eq("user_id", userId)
       .select()
-      .single();
+      .maybeSingle();
 
     if (error) throw error;
 
     return data;
   }
 
-  async delete(id) {
-    const { error } = await supabase.from("categories").delete().eq("id", id);
+  async delete(id, userId) {
+    const { error } = await supabase
+      .from("categories")
+      .delete()
+      .eq("id", id)
+      .eq("user_id", userId)
+      .select("id")
+      .maybeSingle();
 
     if (error) throw error;
 
-    return true;
+    return Boolean(data);
   }
 }
 
