@@ -1,4 +1,4 @@
-import { supabase } from "../config/supabaseClient.js";
+import { supabase, supabaseAuth } from "../config/supabaseClient.js";
 
 export class AuthController {
   async register(req, res) {
@@ -25,7 +25,7 @@ export class AuthController {
     try {
       const { email, password } = req.body;
       console.log("Login attempt:", email);
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabaseAuth.auth.signInWithPassword({
         email,
         password,
       });
