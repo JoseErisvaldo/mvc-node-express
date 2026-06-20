@@ -4,12 +4,6 @@ export function ensureProductExists(product) {
   }
 }
 
-export function ensureEstablishmentOwnership(establishment) {
-  if (!establishment) {
-    throw new Error("Invalid establishment for this user");
-  }
-}
-
 export function ensureImmutableFields(data) {
   const forbiddenFields = [
     "sku",

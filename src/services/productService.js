@@ -6,9 +6,9 @@ import {
   ensureProductExists,
   ensureRequiredFields,
   ensureValidDimensions,
-  ensureEstablishmentOwnership,
   ensureImmutableFields,
 } from "../validators/productValidator.js";
+import { ensureEstablishmentOwnership } from "../validators/generic.js";
 class ProductService {
   async list(userId) {
     return await ProductModel.findAll(userId);
